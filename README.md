@@ -1,158 +1,244 @@
+<div align="center">
+
 # 🛒 BlinkIT Sales Intelligence Engine & Predictive Dashboard
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
-  <img src="https://img.shields.io/badge/Scikit--Learn-1.3%2B-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white" alt="Scikit-Learn"/>
-  <img src="https://img.shields.io/badge/XGBoost-1.7%2B-006400?style=for-the-badge&logo=xgboost&logoColor=white" alt="XGBoost"/>
-  <img src="https://img.shields.io/badge/Streamlit-1.30%2B-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Streamlit"/>
-  <img src="https://img.shields.io/badge/IBM%20SkillsBuild%20%7C%20AICTE-Internship-054ADA?style=for-the-badge&logo=ibm&logoColor=white" alt="IBM SkillsBuild Internship"/>
-</p>
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-1.3%2B-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
+[![XGBoost](https://img.shields.io/badge/XGBoost-1.7%2B-189AB4?style=for-the-badge)](https://xgboost.readthedocs.io/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.30%2B-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![Jupyter](https://img.shields.io/badge/Jupyter-Notebook-F37626?style=for-the-badge&logo=jupyter&logoColor=white)](https://jupyter.org/)
+[![IBM SkillsBuild](https://img.shields.io/badge/IBM%20SkillsBuild-Internship%202026-054ADA?style=for-the-badge&logo=ibm&logoColor=white)](https://skillsbuild.org/)
+[![AICTE](https://img.shields.io/badge/AICTE-Approved-006400?style=for-the-badge)](https://www.aicte-india.org/)
+
+**An end-to-end retail sales forecasting system built on the BlinkIT Grocery dataset — structured across the 4-Tier Analytics Ladder (Descriptive → Diagnostic → Predictive → Prescriptive) — featuring a beginner-friendly interactive Streamlit dashboard for real-time sales prediction.**
+
+</div>
 
 ---
 
-## 📋 Executive Summary
+## 📋 Table of Contents
 
-**BlinkIT Sales Intelligence Engine** is an end-to-end machine learning project that forecasts item-level sales across BlinkIT's dark-store network. Built as part of the **IBM SkillsBuild / AICTE Internship Programme**, it spans the full analytics lifecycle — from raw data ingestion and exploratory analysis, through a leakage-aware preprocessing pipeline, to comparative model evaluation and a live Streamlit prediction dashboard.
-
-The system is designed to help category managers and supply-chain planners make **data-driven inventory decisions**: knowing in advance which product–outlet combinations will generate the most revenue allows stores to optimise replenishment schedules, reduce stockouts, and minimise waste.
-
-### Key Highlights
-
-| Aspect | Detail |
-|--------|--------|
-| **Dataset** | BlinkIT Grocery Data — 8,523 item–outlet records × 12 columns |
-| **Target Variable** | `Sales` (continuous, ₹31 – ₹267 per record) |
-| **Best Model** | Random Forest Regressor (R² = 0.606, RMSE = 38.93) |
-| **Runner-Up** | XGBoost Regressor (R² = 0.595, RMSE = 39.50) |
-| **Deployment** | Interactive Streamlit web application |
-| **Validation** | 5-Fold Cross-Validation across all models |
+1. [Executive Summary](#-executive-summary)
+2. [Official Internship Context](#-official-internship-context)
+3. [Project Architecture & Workflow](#-project-architecture--workflow)
+4. [Dataset Description & Feature Dictionary](#-dataset-description--feature-dictionary)
+5. [Exploratory Data Analysis (EDA)](#-exploratory-data-analysis-eda)
+6. [Model Performance Benchmark](#-model-performance-benchmark)
+7. [Prescriptive Analytics — Outlet Scorecard](#-prescriptive-analytics--outlet-scorecard)
+8. [Screenshots](#-screenshots)
+9. [Local Setup & Execution Guide](#-local-setup--execution-guide)
+10. [Project Structure](#-project-structure)
+11. [Author & Internship Credentials](#-author--internship-credentials)
 
 ---
 
-## 📂 Repository Structure
+## 🎯 Executive Summary
+
+The **BlinkIT Sales Intelligence Engine** is a full-stack data analytics and machine learning capstone project that transforms raw grocery retail data into actionable sales intelligence. Built on a real-world item–outlet sales dataset from the Indian quick-commerce grocery chain BlinkIT (formerly Blinkit), the system delivers:
+
+- **Descriptive analytics** — cohort baselines, revenue distribution, and data quality audits
+- **Diagnostic analytics** — 6 EDA charts uncovering how outlet type, location tier, store size, and item category influence sales
+- **Predictive analytics** — a leakage-aware regression pipeline benchmarking 4 models (Linear Regression, Ridge, Random Forest, XGBoost) with 5-fold cross-validation
+- **Prescriptive analytics** — a peer-format outlet scorecard and shelf-visibility restocking priority list
+- **Interactive dashboard** — a beginner-friendly Streamlit UI for real-time sales forecasting without any ML knowledge required
+
+> **Disclaimer:** The BlinkIT Grocery dataset is a synthetic/derived item–outlet sales dataset intended for educational and analytical training purposes. Model outputs are statistical estimates and should be used alongside human managerial judgment.
+
+---
+
+## 🏛️ Official Internship Context
+
+| Field | Detail |
+|-------|--------|
+| **Program** | IBM SkillsBuild Data Analytics with AI Internship 2026 |
+| **Collaboration** | Offered in partnership with **AICTE** (All India Council for Technical Education) and **BharatCares** |
+| **Internship ID** | `IBMUEDA1448` |
+| **Timeline** | 17 August 2026 – 30 September 2026 |
+| **Author** | M Y Likhith |
+| **Institution** | S JC Institute Of Technology |
+
+This project was developed as the capstone submission for the **IBM SkillsBuild Data Analytics with AI Internship 2026**, a nationally recognised industry–academia programme connecting engineering students with real-world AI/ML use cases under IBM's global learning platform.
+
+---
+
+## 🏗️ Project Architecture & Workflow
 
 ```
-BlinkIT-Sales-Prediction/
-│
-├── BlinkITSalesPrediction.ipynb   # End-to-end ML notebook (EDA → Training → Evaluation)
-├── app.py                          # Streamlit prediction dashboard
-├── requirements.txt                # Python package dependencies
-├── ProjectReport.docx              # Full internship project report
-│
-├── models/
-│   └── best_model.pkl              # Serialised best-model pipeline (Random Forest)
-│
-├── BlinkIT Grocery Data Excel.xlsx # Source dataset (8,523 records)
-│
-└── Screenshots/
-    ├── 01_dashboard_interface.png
-    ├── 02_sales_prediction.png
-    ├── 03_eda_distributions.png
-    └── 04_feature_importance.png
+┌──────────────────────────────────────────────────────────────────┐
+│                  BlinkIT Sales Intelligence Engine                │
+│                                                                    │
+│  ┌─────────────┐    ┌─────────────┐    ┌──────────────────────┐  │
+│  │  Raw Data   │───▶│  Cleaning   │───▶│  Feature Engineering │  │
+│  │ (8,523 rows)│    │ & Imputation│    │  (Item_Category,      │  │
+│  │  12 columns │    │             │    │   Outlet_Age)         │  │
+│  └─────────────┘    └─────────────┘    └──────────┬───────────┘  │
+│                                                    │               │
+│            ┌───────────────────────────────────────┘               │
+│            ▼                                                        │
+│  ┌────────────────────────────────────────────────────────────┐   │
+│  │                  4-TIER ANALYTICS PIPELINE                  │   │
+│  │                                                              │   │
+│  │  TIER 1 ─ Descriptive   │  TIER 2 ─ Diagnostic             │   │
+│  │  • Cohort baselines      │  • 6 EDA visualisations          │   │
+│  │  • Revenue stats         │  • Correlation heatmap           │   │
+│  │  • Category mix          │  • Outlet/Item breakdowns        │   │
+│  │                                                              │   │
+│  │  TIER 3 ─ Predictive    │  TIER 4 ─ Prescriptive           │   │
+│  │  • 4-model CV benchmark  │  • Peer-format outlet scorecard  │   │
+│  │  • Best model: RF (R²    │  • Under-merchandised items list │   │
+│  │    0.606, RMSE 38.93)   │  • Visibility restocking alerts  │   │
+│  └────────────────────────────────────────────────────────────┘   │
+│                                                                    │
+│  ┌─────────────────────────────────────────────────────────────┐  │
+│  │              Streamlit Interactive Dashboard                  │  │
+│  │  • Product & store parameter sliders/dropdowns               │  │
+│  │  • Real-time prediction via best_model.pkl                   │  │
+│  │  • Beginner-friendly UI with tips & insights                 │  │
+│  └─────────────────────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────────────────┘
 ```
+
+**Tech Stack:** Python · Pandas · NumPy · Scikit-Learn · XGBoost · Matplotlib · Seaborn · Streamlit · Jupyter Notebooks · Joblib
 
 ---
 
-## 🗄️ Dataset Description & Feature Dictionary
+## 📊 Dataset Description & Feature Dictionary
 
-**Source:** BlinkIT Grocery Data (synthetic/derived item–outlet sales dataset for educational use)  
-**Shape:** 8,523 rows × 12 columns  
-**Grain:** One row = one product sold at one specific outlet
+### Overview
 
-| Column | Type | Description |
-|--------|------|-------------|
-| `Item Fat Content` | Categorical | Fat classification: `Low Fat`, `Regular`, or `Non-Edible` (engineered) |
-| `Item Identifier` | Categorical | Unique product code (e.g., `FDX32`) |
-| `Item Type` | Categorical | Product category (16 types, e.g., Fruits & Vegetables, Frozen Foods) |
-| `Outlet Establishment Year` | Numeric | Year the outlet was established (1985 – 2022) |
-| `Outlet Identifier` | Categorical | Unique outlet code (e.g., `OUT049`) |
-| `Outlet Location Type` | Categorical | City tier: `Tier 1`, `Tier 2`, or `Tier 3` |
-| `Outlet Size` | Categorical | Physical store size: `Small`, `Medium`, or `High` |
-| `Outlet Type` | Categorical | Store format: `Grocery Store` or `Supermarket Type1/2/3` |
-| `Item Visibility` | Numeric | Fraction of total display area allocated to this product (0.0 – 0.35) |
-| `Item Weight` | Numeric | Product weight in kg (4.0 – 22.0) |
-| `Sales` | Numeric | **Target** — item outlet sales value in ₹ |
-| `Rating` | Numeric | Customer satisfaction rating for the item–outlet record |
+| Property | Value |
+|----------|-------|
+| **Dataset** | BlinkIT Grocery Data (item–outlet level sales) |
+| **Records** | 8,523 rows × 12 columns |
+| **Grain** | One row = one product sold at one outlet |
+| **Target Variable** | `Sales` (continuous, ₹31.29 – ₹266.89) |
+| **Outlets** | 10 unique outlets across 3 location tiers |
+| **Products** | 1,559 unique item identifiers |
+
+### Feature Dictionary
+
+| Column | Type | Description | Notes |
+|--------|------|-------------|-------|
+| `Item Identifier` | Categorical | Unique product SKU code | Prefix: `FD`=Food, `DR`=Drinks, `NC`=Non-Consumable |
+| `Item Type` | Categorical | Specific product category (16 types) | e.g. Frozen Foods, Dairy, Snack Foods |
+| `Item Fat Content` | Categorical | Fat labelling on the product | Raw labels standardised: `LF`/`low fat` → `Low Fat`; `reg` → `Regular` |
+| `Item Weight` | Numeric | Package weight in kg | 1,463 missing values — imputed by same-product mean, fallback to Item Type mean |
+| `Item Visibility` | Numeric | Shelf visibility score (0–1) | 526 zero-value rows treated as missing; imputed by Item_Category median |
+| `Outlet Identifier` | Categorical | Unique store ID (OUT010 – OUT049) | 10 outlets |
+| `Outlet Establishment Year` | Numeric | Year the outlet was opened | Converted to `Outlet_Age = 2026 − year` |
+| `Outlet Size` | Categorical | Physical store size | Small / Medium / High |
+| `Outlet Location Type` | Categorical | City tier classification | Tier 1 (metro) / Tier 2 / Tier 3 |
+| `Outlet Type` | Categorical | Store format | Grocery Store / Supermarket Type1/2/3 |
+| `Rating` | Numeric | Customer satisfaction rating | Mean: 3.97 / 5 |
+| `Sales` | Numeric | **Target** — item-outlet revenue in ₹ | Mean: ₹140.99 · Median: ₹143.01 · Std: ₹62.28 |
 
 ### Engineered Features
 
-| Feature | Description |
-|---------|-------------|
-| `Outlet_Age` | Years since outlet establishment (`current_year − Outlet Establishment Year`) |
-| `Item_Category` | High-level grouping: `Food`, `Drinks`, or `Non-Consumable` |
+| Feature | Formula | Purpose |
+|---------|---------|---------|
+| `Item_Category` | Derived from `Item Identifier` prefix | Low-cardinality grouping (Food / Drinks / Non-Consumable) |
+| `Outlet_Age` | `2026 − Outlet Establishment Year` | Captures store maturity effect |
 
 ---
 
-## 🏗️ System Architecture
+## 🔍 Exploratory Data Analysis (EDA)
 
-The project follows a structured four-tier analytics ladder:
+The notebook (`BlinkITSalesPrediction.ipynb`) contains **6 diagnostic charts** structured as Tier 2 — Diagnostic Analytics:
 
-```mermaid
-flowchart TD
-    A([📥 Raw Data\nBlinkIT Grocery Excel\n8,523 records × 12 cols]) --> B
+| Chart | Key Finding |
+|-------|-------------|
+| **Sales Distribution** | Near-normal distribution centred around ₹140; slight right skew |
+| **Average Sales by Outlet Type** | Remarkably flat across all 4 formats (Sup. Type2: ₹141.68 vs Grocery: ₹140.29) |
+| **Sales by Location Tier & Store Size** | No single tier/size combination dominates — signal is distributed across interactions |
+| **Average Sales by Item Type** | All 16 item types within a tight band; no single category dramatically outperforms |
+| **Item Visibility vs Sales & Correlation Heatmap** | All numeric correlations are very weak (max |r| < 0.06) — price/MRP absence is the key data gap |
+| **Total Revenue by Outlet** | Grocery Stores (OUT010, OUT019) generate ~40% less total revenue — driven by item count, not per-item sales |
 
-    subgraph TIER1["TIER 1 — Descriptive Analytics"]
-        B[Data Loading & Hygiene Audit\nShape check, dtypes, missing values]
-        B --> C[Univariate & Bivariate EDA\nSales distribution, outlet type analysis\ncorrelation heatmap]
-    end
-
-    subgraph TIER2["TIER 2 — Diagnostic Analytics"]
-        C --> D[Root-cause Investigation\nZero-visibility correction\nFat-content label standardisation\nOutlet age derivation]
-    end
-
-    subgraph TIER3["TIER 3 — Predictive Analytics"]
-        D --> E[Preprocessing Pipeline\nColumnTransformer: median imputation\n+ StandardScaler for numerics\nmost-frequent impute + OHE for cats]
-        E --> F{Model Training\n5-Fold CV}
-        F --> G[Linear Regression]
-        F --> H[Ridge Regression]
-        F --> I[Random Forest ✅ Best]
-        F --> J[XGBoost]
-        I --> K[Model Serialisation\nmodels/best_model.pkl]
-    end
-
-    subgraph TIER4["TIER 4 — Prescriptive Analytics"]
-        K --> L[Feature Importance Analysis\nItem MRP · Outlet Type · Outlet Age]
-        L --> M([🖥️ Streamlit Dashboard\napp.py\nReal-time sales prediction])
-    end
-```
+> **Key diagnostic insight:** The absence of an item price / MRP field is the single largest constraint on model accuracy. Price is typically the dominant predictor in retail sales regression; without it, the signal is thin and distributed across categorical interactions — which explains why tree-based models outperform linear ones and why R² remains moderate.
 
 ---
 
-## 📸 Application Screenshots
+## 🏆 Model Performance Benchmark
 
-| Dashboard Interface | Sales Prediction Output |
-|---|---|
-| ![Dashboard](Screenshots/01_dashboard_interface.png) | ![Prediction](Screenshots/02_sales_prediction.png) |
+All models evaluated with **5-fold cross-validation** on an 80/20 train/test split (train: 6,818 rows, test: 1,705 rows).
 
-| EDA Distributions | Feature Importance |
-|---|---|
-| ![EDA](Screenshots/03_eda_distributions.png) | ![Feature Importance](Screenshots/04_feature_importance.png) |
+### Cross-Validation Results (5-Fold CV on Training Set)
+
+| Model | Mean RMSE ↓ | Mean MAE ↓ | Mean R² ↑ |
+|-------|------------|-----------|----------|
+| 🥇 **Random Forest Regressor** | **38.93** | **29.85** | **0.6064** |
+| 🥈 XGBoost | 39.50 | 30.08 | 0.5947 |
+| 🥉 Ridge Regression | 61.94 | 52.33 | 0.0038 |
+| Linear Regression | 61.94 | 52.33 | 0.0038 |
+
+### Model Selection
+
+**Random Forest Regressor** (100 estimators, `random_state=42`) was selected as the production model based on best cross-validated R² (0.606) and lowest RMSE (38.93). The trained pipeline is serialised as `models/best_model.pkl` and consumed by the Streamlit dashboard.
+
+### Feature Importance (Top 10 — Random Forest)
+
+| Rank | Feature | Importance |
+|------|---------|-----------|
+| 1 | Item Weight | 0.3464 |
+| 2 | Item Visibility | 0.2896 |
+| 3 | Rating | 0.0498 |
+| 4 | Item Type — Fruits and Vegetables | 0.0202 |
+| 5 | Item Type — Dairy | 0.0201 |
+| 6 | Item Type — Frozen Foods | 0.0198 |
+| 7 | Item Fat Content — Low Fat | 0.0197 |
+| 8 | Item Fat Content — Regular | 0.0196 |
+| 9 | Item Type — Snack Foods | 0.0188 |
+| 10 | Item Type — Canned | 0.0186 |
+
+> **Interpretability note:** `Item Weight` and `Item Visibility` dominate because they are high-cardinality continuous fields that partially allow the forest to distinguish individual products. This reflects variance reduction more than a direct causal effect.
+
+> **Honest limitation:** R² is moderate (≈0.60) because the dataset lacks an item price / MRP field. This is a data-availability constraint, not a modelling error, and is reported transparently.
 
 ---
 
-## 📊 Model Performance Benchmarks
+## 📈 Prescriptive Analytics — Outlet Scorecard
 
-All models were evaluated using **5-Fold Cross-Validation** on a held-out 20% test split. Metrics are averaged across folds.
+A separate **peer-benchmark model** (Random Forest, 300 trees, `max_depth=8`) is trained on outlet format attributes only — excluding `Outlet Identifier` — to estimate what a *typical outlet with this format* should sell. Each real outlet's actual sales are compared against that benchmark:
 
-| Rank | Model | Mean RMSE ↓ | Mean MAE ↓ | Mean R² ↑ |
-|------|-------|------------|-----------|----------|
-| 🥇 1 | **Random Forest Regressor** | **38.93** | **29.85** | **0.606** |
-| 🥈 2 | XGBoost Regressor | 39.50 | 30.08 | 0.595 |
-| 🥉 3 | Ridge Regression | 61.94 | 52.33 | 0.004 |
-| 4 | Linear Regression | 61.94 | 52.33 | 0.004 |
-
-> **Why Random Forest?** Tree-based ensembles capture the non-linear interaction between outlet type, location tier, and item category that linear models cannot represent. The moderate R² (~0.60) reflects a genuine ceiling in predictive power caused by the absence of an Item MRP column in the training features — a known diagnostic finding documented in the notebook.
-
-### Feature Importance (Random Forest / XGBoost)
-
-1. **Outlet Type** — Supermarket Type 3 drives the highest baseline revenue
-2. **Outlet Age** — Established outlets show stable, higher volumes
-3. **Item Visibility** — Higher shelf-space allocation correlates with increased sales
-4. **Outlet Location Tier** — Tier 1 cities consistently outperform Tier 3
+| Outlet | Format | Tier | Size | Performance vs Peers |
+|--------|--------|------|------|---------------------|
+| OUT046 | Supermarket Type1 | Tier 1 | Small | **+0.98%** ✅ |
+| OUT035 | Supermarket Type1 | Tier 2 | Small | +0.88% ✅ |
+| OUT045 | Supermarket Type1 | Tier 2 | Small | +0.39% ✅ |
+| OUT018 | Supermarket Type2 | Tier 3 | Medium | +0.23% ✅ |
+| OUT013 | Supermarket Type1 | Tier 3 | High | +0.23% ✅ |
+| OUT049 | Supermarket Type1 | Tier 1 | Medium | -0.29% ⚠️ |
+| OUT010 | Grocery Store | Tier 3 | Small | -0.51% ⚠️ |
+| OUT019 | Grocery Store | Tier 1 | Small | -0.77% ⚠️ |
+| OUT027 | Supermarket Type3 | Tier 3 | Medium | -0.90% 🔴 |
+| OUT017 | Supermarket Type1 | Tier 2 | Small | **-0.95%** 🔴 |
 
 ---
 
-## 🚀 Local Setup & Execution
+## 🖼️ Screenshots
+
+<table>
+<tr>
+<td align="center"><strong>Dashboard Interface</strong></td>
+<td align="center"><strong>Sales Prediction Result</strong></td>
+</tr>
+<tr>
+<td><img src="Screenshots/01_dashboard_interface.png" alt="Dashboard Interface" width="420"/></td>
+<td><img src="Screenshots/02_sales_prediction.png" alt="Sales Prediction" width="420"/></td>
+</tr>
+<tr>
+<td align="center"><strong>EDA Distributions</strong></td>
+<td align="center"><strong>Feature Importance</strong></td>
+</tr>
+<tr>
+<td><img src="Screenshots/03_eda_distributions.png" alt="EDA Distributions" width="420"/></td>
+<td><img src="Screenshots/04_feature_importance.png" alt="Feature Importance" width="420"/></td>
+</tr>
+</table>
+
+---
+
+## 🚀 Local Setup & Execution Guide
 
 ### Prerequisites
 
@@ -160,33 +246,34 @@ All models were evaluated using **5-Fold Cross-Validation** on a held-out 20% te
 - `pip` package manager
 - Git
 
-### 1 — Clone the Repository
+### Step 1 — Clone the Repository
 
 ```bash
 git clone https://github.com/<your-username>/BlinkIT-Sales-Prediction.git
 cd BlinkIT-Sales-Prediction
 ```
 
-### 2 — Create & Activate a Virtual Environment
+### Step 2 — Create & Activate a Virtual Environment
 
-```bash
-# Create the virtual environment
+**Windows (PowerShell):**
+```powershell
 python -m venv venv
-
-# Activate — Windows (PowerShell)
 .\venv\Scripts\Activate.ps1
+```
 
-# Activate — macOS / Linux
+**macOS / Linux:**
+```bash
+python3 -m venv venv
 source venv/bin/activate
 ```
 
-### 3 — Install Dependencies
+### Step 3 — Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-The full dependency list is pinned in [`requirements.txt`](requirements.txt):
+`requirements.txt` includes:
 
 ```
 numpy>=2.0.0
@@ -201,99 +288,97 @@ streamlit>=1.30.0
 jupyter>=1.0.0
 ```
 
-### 4 — Run the Training Notebook
+### Step 4 — (Optional) Re-train the Model
 
-Open [`BlinkITSalesPrediction.ipynb`](BlinkITSalesPrediction.ipynb) in JupyterLab or VS Code and run all cells sequentially. The notebook will:
-
-1. Load and clean the BlinkIT Grocery dataset
-2. Perform full EDA (Tiers 1 & 2)
-3. Build and fit the `ColumnTransformer` preprocessing pipeline
-4. Train and cross-validate all four models
-5. Serialize the best model to `models/best_model.pkl`
+If you want to regenerate `models/best_model.pkl` from scratch, open and run all cells in the Jupyter notebook:
 
 ```bash
 jupyter notebook BlinkITSalesPrediction.ipynb
 ```
 
-### 5 — Launch the Streamlit Dashboard
+The notebook will automatically save the best model to `models/best_model.pkl`.
+
+### Step 5 — Launch the Streamlit Dashboard
 
 ```bash
 streamlit run app.py
 ```
 
-The app will open at `http://localhost:8501`. Use the sidebar controls to configure an item–outlet combination and click **🚀 Predict Expected Sales** to get an instant ₹ forecast.
+The dashboard will open automatically in your browser at `http://localhost:8501`.
 
-> **Note:** The `models/best_model.pkl` file must exist before running the app. Execute the notebook first if it is missing.
+### Dashboard Usage
 
----
-
-## 🔍 Preprocessing Methodology
-
-The preprocessing pipeline is built with `sklearn.pipeline.Pipeline` and `sklearn.compose.ColumnTransformer` to guarantee **no data leakage** between train and test splits.
-
-| Step | Numeric Features | Categorical Features |
-|------|-----------------|----------------------|
-| Imputation | Median imputation | Most-frequent imputation |
-| Scaling | `StandardScaler` | — |
-| Encoding | — | `OneHotEncoder` (drop=`first`) |
-
-**Additional cleaning rules applied before the pipeline:**
-
-- **Zero-visibility correction** — `Item Visibility` values of `0.0` are replaced with the per-category median visibility
-- **Fat-content standardisation** — Aliases (`LF`, `low fat`, `reg`) are mapped to canonical labels
-- **Non-Edible labelling** — Non-consumable items are assigned `Non-Edible` as their fat-content label
-- **Outlet Age derivation** — `Outlet_Age = current_year − Outlet Establishment Year`
+| Step | Action |
+|------|--------|
+| **1** | Select **Product Information** — choose category, item type, weight (kg), and MRP (₹) using the sliders and dropdowns on the left |
+| **2** | Select **Store Information** — choose outlet type, store size, location tier, and opening year |
+| **3** | Click **🚀 Calculate Expected Sales** to get the real-time prediction |
+| **4** | View the **Estimated Total Sales** metric card and read the **Beginner Tips & Insights** panel |
 
 ---
 
-## 💡 Retail Strategy Insights
+## 📁 Project Structure
 
-Based on the model's feature importance analysis, the following prescriptive recommendations emerge:
-
-1. **Optimised Replenishment** — Dark stores in Tier 1 / Supermarket Type 3 format should prioritise high-visibility, high-demand items to maximise revenue density.
-2. **Space Allocation** — Older, established outlets have demonstrated customer loyalty; these locations warrant increased shelf allocations for high-velocity SKUs.
-3. **Visibility-Driven Marketing** — Low-visibility products with high unit margins should be promoted aggressively; a small increase in shelf share can yield disproportionate sales uplift.
-4. **Format Strategy** — When expanding the outlet network, Supermarket Type 3 in Tier 1 cities is the format–location combination most likely to exceed average sales targets.
+```
+BlinkIT-Sales-Prediction/
+│
+├── app.py                          # Streamlit dashboard application
+├── BlinkITSalesPrediction.ipynb    # Full 4-tier analytics notebook
+├── BlinkIT Grocery Data Excel.xlsx # Source dataset (8,523 rows × 12 cols)
+├── requirements.txt                # Python dependencies
+├── ProjectReport.docx              # Full project report (Word)
+│
+├── models/
+│   └── best_model.pkl              # Serialised Random Forest pipeline
+│
+└── Screenshots/
+    ├── 01_dashboard_interface.png
+    ├── 02_sales_prediction.png
+    ├── 03_eda_distributions.png
+    └── 04_feature_importance.png
+```
 
 ---
 
-## 👨‍💻 Author & Internship Details
+## 👨‍💻 Author & Official Internship Credentials
 
 <table>
-  <tr>
-    <td><strong>Author</strong></td>
-    <td>M Y Likhith</td>
-  </tr>
-  <tr>
-    <td><strong>Programme</strong></td>
-    <td>IBM SkillsBuild Summer Internship in AI/ML</td>
-  </tr>
-  <tr>
-    <td><strong>Affiliated Body</strong></td>
-    <td>AICTE (All India Council for Technical Education)</td>
-  </tr>
-  <tr>
-    <td><strong>Industry Partner</strong></td>
-    <td>IBM India</td>
-  </tr>
-  <tr>
-    <td><strong>Project Type</strong></td>
-    <td>End-to-end Data Analytics + Machine Learning Capstone</td>
-  </tr>
-  <tr>
-    <td><strong>Analytics Framework</strong></td>
-    <td>4-Tier Analytics Ladder (Descriptive → Diagnostic → Predictive → Prescriptive)</td>
-  </tr>
+<tr>
+<td><strong>Name</strong></td>
+<td>M Y Likhith</td>
+</tr>
+<tr>
+<td><strong>Institution</strong></td>
+<td>S JC Institute Of Technology</td>
+</tr>
+<tr>
+<td><strong>Program</strong></td>
+<td>IBM SkillsBuild Data Analytics with AI Internship 2026</td>
+</tr>
+<tr>
+<td><strong>Offered by</strong></td>
+<td>IBM, in collaboration with AICTE &amp; BharatCares</td>
+</tr>
+<tr>
+<td><strong>Internship ID</strong></td>
+<td><code>IBMUEDA1448</code></td>
+</tr>
+<tr>
+<td><strong>Duration</strong></td>
+<td>17 August 2026 – 30 September 2026</td>
+</tr>
 </table>
 
 ---
 
-## 📄 License
+<div align="center">
 
-This project is intended for educational purposes under the IBM SkillsBuild / AICTE internship guidelines. The BlinkIT Grocery dataset is a synthetic/derived dataset used solely for analytical training. Model outputs are statistical estimates and should be used alongside professional managerial judgment.
+**Built with ❤️ as part of the IBM SkillsBuild Data Analytics with AI Internship 2026**
 
----
+*Empowering the next generation of data scientists through hands-on AI/ML learning*
 
-<p align="center">
-  Built with ❤️ by <strong>M Y Likhith</strong> &nbsp;|&nbsp; IBM SkillsBuild / AICTE Internship
-</p>
+[![IBM SkillsBuild](https://img.shields.io/badge/IBM%20SkillsBuild-054ADA?style=flat-square&logo=ibm&logoColor=white)](https://skillsbuild.org/)
+[![AICTE](https://img.shields.io/badge/AICTE-006400?style=flat-square)](https://www.aicte-india.org/)
+[![BharatCares](https://img.shields.io/badge/BharatCares-FF6B35?style=flat-square)](https://www.bharatcares.org/)
+
+</div>
