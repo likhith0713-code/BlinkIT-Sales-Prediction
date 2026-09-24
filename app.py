@@ -2,10 +2,13 @@ import streamlit as st
 import pandas as pd
 import joblib
 
+# Page configuration
 st.set_page_config(page_title="Blinkit Sales Intelligence Engine", page_icon="🛒", layout="wide")
 
 st.title("🛒 Blinkit Sales Intelligence Engine")
+st.markdown("---")
 
+# Sidebar Input Controls (matching your screenshot layout)
 st.sidebar.header("Input Controls")
 
 # Input variables
@@ -22,17 +25,13 @@ outlet_size = st.sidebar.selectbox("Outlet Size", ['Small', 'Medium', 'High'])
 outlet_location_tier = st.sidebar.selectbox("Outlet Location Tier", ['Tier 1', 'Tier 2', 'Tier 3'])
 outlet_type = st.sidebar.selectbox("Outlet Type", ['Grocery Store', 'Supermarket Type1', 'Supermarket Type2', 'Supermarket Type3'])
 
-# Main area
-col1, col2 = st.columns([2, 1])
+# Main area split into two columns matching your screenshot design
+col1, col2 = st.columns([2, 1], gap="medium")
 
 with col1:
     st.subheader("Parsed Input DataFrame")
     
     # Calculate derived features as required by the model
-    # Model expects: 
-    # FEATURES_NUM = ["Item Weight", "Item Visibility", "Outlet_Age", "Rating"]
-    # FEATURES_CAT = ["Item Fat Content", "Item Type", "Item_Category", "Outlet Identifier", "Outlet Location Type", "Outlet Size", "Outlet Type"]
-    
     outlet_age = 2026 - outlet_establishment_year
     rating = 4.0 # Dummy rating since not provided in inputs
     outlet_identifier = "OUT027" # Dummy default, typically a high volume outlet
@@ -53,10 +52,12 @@ with col1:
     
     input_df = pd.DataFrame(input_dict)
     
-    # Also show Item MRP as user selected it, although not in the model
+    # Show Item MRP as user selected it, alongside the model inputs table
     display_df = input_df.copy()
     display_df["Item MRP"] = [item_mrp]
-    st.dataframe(display_df)
+    st.dataframe(display_df, use_container_width=True)
+    
+    st.markdown("<br>", unsafe_allow_html=True)
     
     if st.button("🚀 Predict Expected Sales"):
         try:
@@ -72,3 +73,7 @@ with col2:
     st.subheader("Retail Strategy Insights")
     st.info("**Outlet Type Influence:** Supermarket Type 3 historically drives the highest sales volume due to greater floor space and foot traffic. Adjust your outlet type to see potential maximum revenue.")
     st.info("**Item MRP Impact:** Higher Item MRP generally correlates with higher expected sales revenue, assuming consistent demand. Adjusting the MRP allows predicting price elasticity effects in retail settings.")
+
+# --- Footer Credits ---
+st.markdown("---")
+st.markdown("<div style='text-align: center; color: gray;'>Developed by <b>M Y Likhith</b> | IBM SkillsBuild / AICTE Internship Project</div>", unsafe_allow_html=True)
